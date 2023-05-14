@@ -14,10 +14,18 @@ class CreateDentistsTable extends Migration
     public function up()
     {
         Schema::create('dentists', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
+            $table->string('name');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('address');
+            $table->date('DOB');
+            $table->enum('gender', ['male', 'female']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
+    
 
     /**
      * Reverse the migrations.

@@ -147,15 +147,7 @@
                       ></v-text-field>
                     </v-card-text>
 
-                    <!-- Allergies field -->
-                    <v-card-text class="px-5">
-                      <v-text-field
-                        label="Allergies"
-                        v-model="dentist_items.allergies"
-                        prepend-inner-icon="mdi-alert-circle"
-                        required
-                      ></v-text-field>
-                    </v-card-text>
+                  
 
                     <!-- DOB field -->
                     <v-card-text class="px-5">
@@ -279,11 +271,6 @@
                     </div>
                     <div class="expanded-item__divider"></div>
                     <div class="expanded-item__header">
-                      <span class="expanded-item__header-text">Allergies:</span>
-                      <span class="expanded-item__header-value">{{ item.allergies }}</span>
-                    </div>
-                    <div class="expanded-item__divider"></div>
-                    <div class="expanded-item__header">
                       <span class="expanded-item__header-text">CreatedAt:</span>
                       <span class="expanded-item__header-value">{{ item.created_at }}</span>
                     </div>
@@ -324,7 +311,6 @@ export default {
         { text: 'Phone', value: 'phone' },
         { text: 'Email', value: 'email' },
         { text: 'Gender', value: 'gender' },
-        
         { text: "Actions", value: "actions", sortable: false, align: "right" },
       ],
       expanded: [],
@@ -334,7 +320,6 @@ export default {
         phone:"",
         gender:"", 
         address:"",   
-        allergies:"",
         email:"",
       },
       editedIndex: -1,
@@ -343,7 +328,6 @@ export default {
         phone:"",
         gender:"", 
         address:"",   
-        allergies:"",
         email:"",  
       },
       id:null,

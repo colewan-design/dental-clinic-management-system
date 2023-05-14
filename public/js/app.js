@@ -2373,7 +2373,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         phone: "",
         gender: "",
         address: "",
-        allergies: "",
         email: ""
       },
       editedIndex: -1,
@@ -2382,7 +2381,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         phone: "",
         gender: "",
         address: "",
-        allergies: "",
         email: ""
       },
       id: null,
@@ -3370,21 +3368,6 @@ var render = function render() {
           staticClass: "px-5"
         }, [_c("v-text-field", {
           attrs: {
-            label: "Allergies",
-            "prepend-inner-icon": "mdi-alert-circle",
-            required: ""
-          },
-          model: {
-            value: _vm.dentist_items.allergies,
-            callback: function callback($$v) {
-              _vm.$set(_vm.dentist_items, "allergies", $$v);
-            },
-            expression: "dentist_items.allergies"
-          }
-        })], 1), _vm._v(" "), _c("v-card-text", {
-          staticClass: "px-5"
-        }, [_c("v-text-field", {
-          attrs: {
             label: "Date of Birth",
             "prepend-inner-icon": "mdi-calendar",
             required: ""
@@ -3539,14 +3522,6 @@ var render = function render() {
         }, [_vm._v("Date of Birth:")]), _vm._v(" "), _c("span", {
           staticClass: "expanded-item__header-value"
         }, [_vm._v(_vm._s(item.DOB))])]), _vm._v(" "), _c("div", {
-          staticClass: "expanded-item__divider"
-        }), _vm._v(" "), _c("div", {
-          staticClass: "expanded-item__header"
-        }, [_c("span", {
-          staticClass: "expanded-item__header-text"
-        }, [_vm._v("Allergies:")]), _vm._v(" "), _c("span", {
-          staticClass: "expanded-item__header-value"
-        }, [_vm._v(_vm._s(item.allergies))])]), _vm._v(" "), _c("div", {
           staticClass: "expanded-item__divider"
         }), _vm._v(" "), _c("div", {
           staticClass: "expanded-item__header"
