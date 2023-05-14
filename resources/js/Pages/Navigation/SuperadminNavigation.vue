@@ -4,6 +4,9 @@
   padding-bottom: 16px; /* adjust the value as needed */
 }
 
+.nav-drawer .v-list-item--active {
+  color: white;
+}
 
 </style>
 
@@ -11,13 +14,10 @@
   <main>
     <v-card>
       <v-layout>
-        <v-navigation-drawer style="background-color: #009EFF;">
+        <v-navigation-drawer class="nav-drawer" style="background-color: #009EFF;">
+
           <v-list-item class="px-2">
-            <v-list-item>
-              <v-list-item-avatar style="height: 100px; margin: 20px auto; width: 100px; display: block;">
-                <img src="./img/superadmin.png">
-              </v-list-item-avatar>
-            </v-list-item>
+              <img src="./img/superadmin4.png" style="max-height: 100%; width: 100%;">
           </v-list-item>
           <v-divider></v-divider>
   
@@ -61,27 +61,31 @@
                 </v-list-item-icon>
                 <v-list-item-title class="text-uppercase" style="color: white;">Sessions</v-list-item-title>
               </v-list-item>
+              <!-- Settings -->
 
-              <v-list-item to="/sessions">
-                <v-list-item-icon>
-                  <v-icon color="white">mdi-cog</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title class="text-uppercase" style="color: white;">Settings</v-list-item-title>
+              <v-list-group v-model="menu" prepend-icon="mdi-cog" no-action color="white">
+
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title class="text-uppercase" style="color: white;">Settings</v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-item to="/clinic">
+                <v-list-item-content>
+                  <v-list-item-title class="text-uppercase" style="color: white;">Clinic</v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
 
-              <v-list-item to="/sessions">
-                <v-list-item-icon>
-                  <v-icon color="white">mdi-hospital-building</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title class="text-uppercase" style="color: white;">Clinic</v-list-item-title>
+              <v-list-item to="/database">
+                <v-list-item-content>
+                  <v-list-item-title class="text-uppercase" style="color: white;">Database</v-list-item-title>
+                </v-list-item-content>
               </v-list-item>
+            </v-list-group>
 
-              <v-list-item to="/sessions">
-                <v-list-item-icon>
-                  <v-icon color="white">mdi-database</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title class="text-uppercase" style="color: white;">Database</v-list-item-title>
-              </v-list-item>
+
+
             </v-list>
           </v-navigation-drawer>
         </v-layout>

@@ -7,19 +7,37 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\DentistController;
 //Exports
-use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/logout', function (Request $request) {
+        $request->user()->tokens()->delete();
+        return response()->json(['message' => 'Successfully logged out']);
+    });
+
+    Route::apiResources([
+        'patients' => PatientController::class,
+        'dentists' => DentistController::class,
+    ]);
+});
 // Public API routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
-//Accounts
-Route::get('/accounts', [AccountsController::class, 'index']);
-Route::post('/accounts/create', [AccountsController::class, 'store']);
-Route::put('/accounts/update/{id}', [AccountsController::class, 'update']);
-Route::delete('/accounts/delete/{id}', [AccountsController::class, 'destroy']);
+//Patients
+Route::get('/patients', [PatientController::class, 'index']);
+Route::post('/patients/create', [PatientController::class, 'store']);
+Route::put('/patients/update/{id}', [PatientController::class, 'update']);
+Route::delete('/patients/delete/{id}', [PatientController::class, 'destroy']);
 
+//Dentists
+Route::get('/dentists', [DentistController::class, 'index']);
+Route::post('/dentists/create', [DentistController::class, 'store']);
+Route::put('/dentists/update/{id}', [DentistController::class, 'update']);
+Route::delete('/dentists/delete/{id}', [DentistController::class, 'destroy']);
 
 ?>

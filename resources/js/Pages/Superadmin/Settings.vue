@@ -1,0 +1,23 @@
+<style>
+.table-row {
+  padding: 20px;
+}
+
+</style>
+<template>
+  <v-card>
+    <v-layout>
+      <superadmin-navigation></superadmin-navigation>
+
+        <v-main>
+          <v-row class="table-row">
+            <v-col>
+              <v-toolbar-title>Settings</v-toolbar-title>
+             
+            </v-col>
+          </v-row>
+        </v-main>
+
+    </v-layout>
+  </v-card>
+</template>
