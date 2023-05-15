@@ -9,6 +9,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DentistController;
+use App\Http\Controllers\AppointmentController;
 //Exports
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -40,4 +41,9 @@ Route::post('/dentists/create', [DentistController::class, 'store']);
 Route::put('/dentists/update/{id}', [DentistController::class, 'update']);
 Route::delete('/dentists/delete/{id}', [DentistController::class, 'destroy']);
 
+//Appointments
+Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::post('/appointments/create', [AppointmentController::class, 'store']);
+Route::put('/appointments/update/{id}', [AppointmentController::class, 'update']);
+Route::delete('/appointments/delete/{id}', [AppointmentController::class, 'destroy']);
 ?>

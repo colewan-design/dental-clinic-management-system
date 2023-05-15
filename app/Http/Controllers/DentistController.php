@@ -45,7 +45,7 @@ class DentistController extends Controller
             // Insert a new record into the parents table
             $dentists = new dentist();
             columnSetter($dentists, $request);
-            $id = IdGenerator::generate(['table' => 'dentists', 'field' => 'id', 'length' => 10, 'prefix' => 'P' . date('mdy')]);
+            $id = IdGenerator::generate(['table' => 'dentists', 'field' => 'id', 'length' => 10, 'prefix' => 'D' . date('mdy')]);
             $dentists -> id = $id;
             $dentists->save();
 
