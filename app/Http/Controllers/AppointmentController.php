@@ -43,7 +43,7 @@ class AppointmentController extends Controller
     
         try {
             // Insert a new record into the parents table
-            $appointments = new dentist();
+            $appointments = new appointment();
             columnSetter($appointments, $request);
             $id = IdGenerator::generate(['table' => 'appointments', 'field' => 'id', 'length' => 10, 'prefix' => 'A' . date('mdy')]);
             $appointments -> id = $id;

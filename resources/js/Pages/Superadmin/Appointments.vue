@@ -139,58 +139,71 @@
           ></v-text-field>
         </v-card-text>
 
-        <!-- Cancelled field -->
-        <v-card-text class="px-5">
-          <v-checkbox
-            label="Cancelled"
-            v-model="appointment_items.cancelled"
-            prepend-inner-icon="mdi-close-circle-outline"
-          ></v-checkbox>
-        </v-card-text>
-
         <v-card-actions class="px-5">
-          <v-spacer></v-spacer>
+  <v-tooltip top>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        x-small
+        fab
+        dark
+        :color="'primary'"
+        v-bind="attrs"
+        v-on="on"
+        @click="Submit"
+        :disabled="!valid"
+      >
+        <v-icon>
+          mdi-check
+        </v-icon>
+      </v-btn>
+    </template>
+    Save
+  </v-tooltip>
 
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                x-small
-                fab
-                dark
-                :color="appointment_items.cancelled ? 'red' : 'primary'"
-                v-bind="attrs"
-                v-on="on"
-                @click="Submit"
-                :disabled="!valid"
-              >
-                <v-icon>
-                  {{ appointment_items.cancelled ? 'mdi-close' : 'mdi-check' }}
-                </v-icon>
-              </v-btn>
-            </template>
-            <span>{{ appointment_items.cancelled ? 'Cancel' : 'Save' }}</span>
-          </v-tooltip>
+  <v-tooltip top>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        x-small
+        fab
+        dark
+        color="secondary"
+        v-bind="attrs"
+        v-on="on"
+        class="ml-2"
+        @click="close"
+      >
+        <v-icon>
+          mdi-close
+        </v-icon>
+      </v-btn>
+    </template>
+    <span>Close</span>
+  </v-tooltip>
 
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                x-small
-                fab
-                dark
-                color="secondary"
-                v-bind="attrs"
-                v-on="on"
-                class="ml-2"
-                @click="close"
-              >
-                <v-icon>
-                  mdi-close
-                </v-icon>
-              </v-btn>
-            </template>
-            <span>Close</span>
-          </v-tooltip>
-        </v-card-actions>
+  <v-tooltip top>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        x-small
+        fab
+        dark
+        :color="appointment_items.status === 'active' ? 'red' : 'green'"
+        v-bind="attrs"
+        v-on="on"
+        class="ml-2"
+        @click="addStatus"
+      >
+        <v-icon>
+          {{ appointment_items.status === 'active' ? 'mdi-close' : 'mdi-check' }}
+        </v-icon>
+    
+      </v-btn>
+    </template>
+    <span>{{ appointment_items.status === 'active' ? 'Cancel Appointment' : 'Activate Appointment' }}</span>
+    
+  </v-tooltip>
+</v-card-actions>
+
+
       </v-card>
     </v-form>
 
@@ -250,14 +263,10 @@
                 <template v-slot:expanded-item="{ headers, item }">
                   <td :colspan="headers.length" class="expanded-item">
                     <div class="expanded-item__header">
-                      <span class="expanded-item__header-text">Address:</span>
-                      <span class="expanded-item__header-value">{{ item.address }}</span>
+                      <span class="expanded-item__header-text">Status:</span>
+                      <span class="expanded-item__header-value">{{ item.status }}</span>
                     </div>
-                    <div class="expanded-item__divider"></div>
-                    <div class="expanded-item__header">
-                      <span class="expanded-item__header-text">Date of Birth:</span>
-                      <span class="expanded-item__header-value">{{ item.DOB }}</span>
-                    </div>
+                    
                     <div class="expanded-item__divider"></div>
                     <div class="expanded-item__header">
                       <span class="expanded-item__header-text">CreatedAt:</span>
@@ -311,7 +320,7 @@ export default {
         dentist_id:"",
         date:"", 
         time:"",   
-        status:"",
+        status: "active",
       },
       editedIndex: -1,
       defaultItem: {  
@@ -357,6 +366,14 @@ export default {
             if (res.status === 200 && res.data) this.dentists = res.data;
             console.log(res.data);
           },
+          addStatus() {
+      if (this.appointment_items.status === 'cancelled') {
+        this.appointment_items.status = 'active';
+      } else {
+        this.appointment_items.status = 'cancelled';
+      }
+    },
+
           logout() {
           axios.post('/logout')
             .then(response => {

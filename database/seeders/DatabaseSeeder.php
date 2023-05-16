@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         //factory classess
         \App\Models\patient::factory(10)->create();
-        
+        \App\Models\dentist::factory(10)->create();
         $this->call([
         
                //-------wag gagalawin--------------------//

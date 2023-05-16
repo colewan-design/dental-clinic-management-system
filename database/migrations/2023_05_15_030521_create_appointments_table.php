@@ -19,7 +19,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('dentist_id');
             $table->string('date');
             $table->string('time');
-            $table->string('status');
+            $table->string('status')->nullable();
          
             $table->timestamps();
             $table->softDeletes();
