@@ -70,7 +70,7 @@
             <div class="table-container">
               <v-data-table
                 :headers="headers"
-                :items="appointments"
+                :items="filteredAppointments"
                 :search="search"
                 :expanded.sync="expanded"
                 item-key="id"
@@ -82,6 +82,24 @@
                     <v-col cols="12" md="4">
                       <v-text-field v-model="search" label="Search" clearable></v-text-field>
                     </v-col>
+                    <v-col cols="12" md="6"></v-col>
+                    <v-col cols="12" md="2">
+                        <v-menu offset-y>
+                          <template v-slot:activator="{ on }">
+                            <v-btn text v-on="on">
+                              <v-icon left>mdi-calendar</v-icon>
+                              {{ selectedDate }}
+                            </v-btn>
+                          </template>
+                          <v-date-picker v-model="selectedDate" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="cancelDateSelection">Cancel</v-btn>
+
+                            <v-btn text color="primary" @click="menu = false">OK</v-btn>
+                          </v-date-picker>
+                        </v-menu>
+                      </v-col>
+
                   
                    
                   </v-row>
@@ -606,6 +624,7 @@ export default {
     SuperadminNavigation: SuperadminNavigation,
   },
   data: () => ({
+    selectedDate: null,
       successSnackbar: false,
       dialogDelete: false,
       dialog: false,
@@ -648,6 +667,16 @@ export default {
     
   }),
   computed: {
+    filteredAppointments() {
+    if (!this.selectedDate) {
+      return this.appointments;
+    }
+    const selectedDate = new Date(this.selectedDate).toISOString().substr(0, 10);
+    return this.appointments.filter(appointment => appointment.date === selectedDate);
+  },
+        selectedDateString() {
+          return new Date(this.selectedDate).toLocaleDateString();
+        },
           formTitle() {
             return this.editedIndex === -1 ? "New Appointment Record" : "Edit Appointment Record";
           },
@@ -667,6 +696,10 @@ export default {
           this.initialize();
         },
         methods: {
+          cancelDateSelection() {
+            this.selectedDate = null;
+            this.menu = false;
+          },
           initialize() {
             this.AppointmentList();
             this.PatientList();
