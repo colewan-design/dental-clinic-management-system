@@ -51,6 +51,10 @@
   background-color: #ddd;
   margin: 20px 0;
 }
+.content-margin {
+  margin: 20px;
+}
+
 </style>
 
 <template>
@@ -78,6 +82,7 @@
                     <v-col cols="12" md="4">
                       <v-text-field v-model="search" label="Search" clearable></v-text-field>
                     </v-col>
+                  
                    
                   </v-row>
                   <v-dialog v-model="dialog" max-width="500px">
@@ -266,12 +271,313 @@
                       <span class="expanded-item__header-text">Status:</span>
                       <span class="expanded-item__header-value">{{ item.status }}</span>
                     </div>
-                    
                     <div class="expanded-item__divider"></div>
                     <div class="expanded-item__header">
                       <span class="expanded-item__header-text">CreatedAt:</span>
                       <span class="expanded-item__header-value">{{ item.created_at }}</span>
                     </div>
+                    
+                    <div class="expanded-item__divider"></div>
+                    <div class="expanded-item__header">
+                      <span class="expanded-item__header-text">Session:</span>
+                      <span class="expanded-item__header-value">
+                    <v-dialog v-model="dialogVisible" max-width="900px">
+                      <template v-slot:activator="{ on }">
+                        <v-btn v-on="on" text color="primary">Create Treatment Session</v-btn>
+                      </template>
+                      
+                      <v-form ref="form" v-model="valid">
+                        <v-card class="py-5">
+                          <v-card-title class="px-5">
+                            <span class="text-h6">Create Treatment Session</span>
+                          </v-card-title>
+                          <!--modal content here-->
+                          <v-row>
+                            <v-col class="content-margin">
+                              <div class="expanded-item__row">
+                                <span>Appointment ID:</span>
+                                <span>{{ item.id }}</span>
+                              </div>
+                              <div class="expanded-item__divider"></div>
+                              <div class="expanded-item__row">
+                                <span>Patient ID:</span>
+                                <span>{{ item.patient_id }}</span>
+                              </div>
+                              <div class="expanded-item__divider"></div>
+                              <div class="expanded-item__row">
+                                <span>Dentist ID:</span>
+                                <span>{{ item.dentist_id }}</span>
+                              </div>
+                              <div class="expanded-item__divider"></div>
+                              <div class="expanded-item__row">
+                                <span>Consultation Note:</span>
+                                <span>
+                                  <v-card-text class="px-5">
+                                    <v-text-field
+                                      label="Consultation Note"
+                                      v-model="item.consultation_note"
+                                      prepend-inner-icon="mdi-alert-circle"
+                                      required
+                                    ></v-text-field>
+                                  </v-card-text>
+                                </span>
+                              </div>
+                              <div class="expanded-item__divider"></div>
+                              <div class="expanded-item__row">
+                                <span>Prescriptions:</span>
+                                <span>
+                                  <v-card-text class="px-5">
+                                    <v-text-field
+                                      label="Prescriptions Note"
+                                      v-model="item.prescription_note"
+                                      prepend-inner-icon="mdi-alert-circle"
+                                      required
+                                    ></v-text-field>
+                                  </v-card-text>
+                                </span>
+                              </div>
+                            </v-col>
+                            <v-col class="content-margin">
+                              <v-card>
+                                <v-card-title class="text-h6">Billing</v-card-title>
+                                <v-data-table
+                                  :items="billingItems"
+                                  :headers="billingHeaders"
+                                  hide-default-footer
+                                >
+                              <template v-slot:top>
+                 
+                  <v-dialog v-model="dialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }" >
+                    <v-btn x-small fab color="primary" dark v-bind="attrs" v-on="on" style="float: right;">
+                      <v-icon dark> mdi-plus </v-icon>
+                    </v-btn>
+                  </template>
+                  <!-- modal for edit -->
+                  <v-form ref="form" v-model="valid">
+                  <v-card class="py-5">
+                    <v-card-title class="px-5">
+                      <span class="text-h6">{{ formTitle }}</span>
+                    </v-card-title>
+
+                    <v-card-text class="px-5">
+                      <v-autocomplete
+                      label="Patient"
+                      hide-details
+                      :items="patients"
+                      :item-text="patients => `${patients.name}`"
+                      :item-value="patients => patients.id"
+                      v-model="appointment_items.patient_id"
+                      prepend-inner-icon="mdi-pencil"
+                    ></v-autocomplete>
+                    </v-card-text>
+                    
+                    <v-card-text class="px-5">
+                      <v-autocomplete
+                      label="Dentist"
+                      hide-details
+                      :items="dentists"
+                      :item-text="dentists => `${dentists.name}`"
+                      :item-value="dentists => dentists.id"
+                      v-model="appointment_items.dentist_id"
+                      prepend-inner-icon="mdi-pencil"
+                    ></v-autocomplete>
+                    </v-card-text>
+
+                    <!-- Date field -->
+                    <v-card-text class="px-5">
+                      <v-text-field
+                        label="Date"
+                        v-model="appointment_items.date"
+                        prepend-inner-icon="mdi-calendar"
+                        type="date"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+
+                    <!-- Time field -->
+                    <v-card-text class="px-5">
+                      <v-text-field
+                        label="Time"
+                        v-model="appointment_items.time"
+                        prepend-inner-icon="mdi-clock-time-four-outline"
+                        type="time"
+                        required
+                      ></v-text-field>
+                    </v-card-text>
+
+                    <v-card-actions class="px-5">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          x-small
+                          fab
+                          dark
+                          :color="'primary'"
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="Submit"
+                          :disabled="!valid"
+                        >
+                          <v-icon>
+                            mdi-check
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      Save
+                    </v-tooltip>
+
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          x-small
+                          fab
+                          dark
+                          color="secondary"
+                          v-bind="attrs"
+                          v-on="on"
+                          class="ml-2"
+                          @click="close"
+                        >
+                          <v-icon>
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>Close</span>
+                    </v-tooltip>
+
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          x-small
+                          fab
+                          dark
+                          :color="appointment_items.status === 'active' ? 'red' : 'green'"
+                          v-bind="attrs"
+                          v-on="on"
+                          class="ml-2"
+                          @click="addStatus"
+                        >
+                          <v-icon>
+                            {{ appointment_items.status === 'active' ? 'mdi-close' : 'mdi-check' }}
+                          </v-icon>
+                      
+                        </v-btn>
+                      </template>
+                      <span>{{ appointment_items.status === 'active' ? 'Cancel Appointment' : 'Activate Appointment' }}</span>
+                      
+                    </v-tooltip>
+                  </v-card-actions>
+
+
+                  </v-card>
+                </v-form>
+
+              </v-dialog>
+              <!--Dialog Delete-->
+              <v-dialog v-model="dialogDelete" max-width="500px">
+                  <v-card>
+                    <v-card-title class="text-h6 justify-center">
+                      Are you sure you want to delete?
+                    </v-card-title>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            x-small
+                            fab
+                            dark
+                            color="secondary"
+                            v-bind="attrs"
+                            v-on="on"
+                            class="ml-2"
+                            @click="closeDelete"
+                          >
+                            <v-icon style="color: #fff !important">
+                              mdi-close
+                            </v-icon></v-btn
+                          >
+                        </template>
+                        <span>Cancel</span>
+                      </v-tooltip>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            x-small
+                            fab
+                            dark
+                            color="error"
+                            v-bind="attrs"
+                            v-on="on"
+                            class="ml-2"
+                            @click="deleteItemConfirm"
+                          >
+                            <v-icon style="color: #fff !important">
+                              mdi-check
+                            </v-icon></v-btn
+                          >
+                        </template>
+                        <span>Continue</span>
+                      </v-tooltip>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                </template>
+                              </v-data-table>
+                              </v-card>
+                            </v-col>
+                          </v-row>
+                          <v-card-actions class="px-5">
+                            <v-spacer></v-spacer>
+
+                            <v-tooltip top>
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  x-small
+                                  fab
+                                  dark
+                                  color="primary"
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  @click="Submit"
+                                  :disabled="!valid"
+                                >
+                                  <v-icon>
+                                    mdi-check
+                                  </v-icon>
+                                </v-btn>
+                              </template>
+                              <span>Save</span>
+                            </v-tooltip>
+
+                            <v-tooltip top>
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  x-small
+                                  fab
+                                  dark
+                                  color="secondary"
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  class="ml-2"
+                                  @click="closeSession"
+                                >
+                                  <v-icon>
+                                    mdi-close
+                                  </v-icon>
+                                </v-btn>
+                              </template>
+                              <span>Cancel</span>
+                            </v-tooltip>
+                          </v-card-actions>
+                        </v-card>
+                      </v-form>
+                    </v-dialog>
+                  </span>
+                </div>
                   </td>
                 </template>
 
@@ -311,6 +617,11 @@ export default {
         { text: 'Time', value: 'time' },
         { text: "Actions", value: "actions", sortable: false, align: "right" },
       ],
+      billingHeaders: [
+        { text: 'Description', value: 'description' },
+        { text: 'Amount', value: 'amount' },
+        { text: "Actions", value: "actions", sortable: false, align: "right" },
+      ],
       expanded: [],
       appointments: [],
       patients: [],
@@ -332,6 +643,8 @@ export default {
       },
       id:null,
       valid: false,
+      dialogSession: false,
+      dialogVisible: false,
     
   }),
   computed: {
@@ -340,6 +653,9 @@ export default {
           },
         },
         watch: {
+          dialogSession(val) {
+            val || this.close();
+          },
           dialog(val) {
             val || this.close();
           },
@@ -404,6 +720,10 @@ export default {
             this.appointment_items = Object.assign({}, item);
             this.dialog = true;
           },
+          sessionItem(item) {
+            this.id = item.id;
+            this.dialogSession = true;
+          },
           deleteItem(item) {
             this.id = item.id;
             this.dialogDelete = true;
@@ -422,6 +742,13 @@ export default {
           },
           close() {
             this.dialog = false;
+            this.$nextTick(() => {
+              this.appointment_items = Object.assign({}, this.defaultItem);
+              this.editedIndex = -1;
+            });
+          },
+          closeSession() {
+            this.dialogSession = false;
             this.$nextTick(() => {
               this.appointment_items = Object.assign({}, this.defaultItem);
               this.editedIndex = -1;

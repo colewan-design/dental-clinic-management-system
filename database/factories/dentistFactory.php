@@ -22,10 +22,10 @@ class dentistFactory extends Factory
         $current_month = date('m');
         $current_day = date('d');
         $current_year = date('y');
-        $patient_id = 'P' . $current_month . $current_day . $current_year . str_pad(static::$counter, 2, '0', STR_PAD_LEFT);
+        $dentist_id = 'D' . $current_month . $current_day . $current_year . str_pad(static::$counter, 2, '0', STR_PAD_LEFT);
         
         return [
-            'id' => $patient_id,
+            'id' => $dentist_id,
             'name' => $this->faker->name,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,

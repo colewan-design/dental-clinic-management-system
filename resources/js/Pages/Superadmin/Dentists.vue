@@ -79,6 +79,7 @@
                       <v-text-field v-model="search" label="Search" clearable></v-text-field>
                     </v-col>
                    
+                   
                   </v-row>
                   <v-dialog v-model="dialog" max-width="500px">
                 <template v-slot:activator="{ on, attrs }" >
@@ -155,7 +156,7 @@
                         label="Date of Birth"
                         v-model="dentist_items.DOB"
                         prepend-inner-icon="mdi-calendar"
-                       
+                       type="date"
                         required
                       ></v-text-field>
                     </v-card-text>
@@ -305,6 +306,7 @@ export default {
       successSnackbar: false,
       dialogDelete: false,
       dialog: false,
+     
       search: '',
       headers: [
         { text: 'Name', value: 'name' },
@@ -340,6 +342,7 @@ export default {
           },
         },
         watch: {
+         
           dialog(val) {
             val || this.close();
           },
@@ -388,6 +391,7 @@ export default {
             this.id = item.id;
             this.dialogDelete = true;
           },
+         
           async deleteItemConfirm() {
             var res = await axios.delete("/dentists/delete/" + this.id);
             if (res.status === 200) {
@@ -407,6 +411,7 @@ export default {
               this.editedIndex = -1;
             });
           },
+         
           closeDelete() {
             this.dialogDelete = false;
             this.$nextTick(() => {

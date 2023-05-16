@@ -163,7 +163,7 @@
                         label="Date of Birth"
                         v-model="patient_items.DOB"
                         prepend-inner-icon="mdi-calendar"
-                       
+                       type="date"
                         required
                       ></v-text-field>
                     </v-card-text>
